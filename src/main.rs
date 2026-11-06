@@ -550,16 +550,19 @@ struct Pointer {
     down: Option<usize>,
 }
 
-const APP_BG: Color = Color::Rgb(12, 10, 9);
-const SHADOW: Color = Color::Rgb(0, 0, 0);
-const CARD_BG: Color = Color::Rgb(41, 37, 36);
-const CARD_BORDER: Color = Color::Rgb(87, 83, 78);
-const CREAM: Color = Color::Rgb(254, 243, 199);
-const AMBER: Color = Color::Rgb(251, 191, 36);
-const STONE: Color = Color::Rgb(168, 162, 158);
-const DISPLAY_BG: Color = Color::Rgb(12, 10, 9);
-const DISPLAY_BORDER: Color = Color::Rgb(146, 64, 14);
-const ERROR_FG: Color = Color::Rgb(252, 165, 165);
+// Catppuccin Mocha, matching ~/.config/yazi/flavors/catppuccin-mocha.yazi.
+const APP_BG: Color = Color::Rgb(30, 30, 46);
+const SHADOW: Color = Color::Rgb(17, 17, 27);
+const CARD_BG: Color = Color::Rgb(49, 50, 68);
+const CARD_BORDER: Color = Color::Rgb(127, 132, 156);
+const CREAM: Color = Color::Rgb(205, 214, 244);
+const BLUE: Color = Color::Rgb(137, 180, 250);
+const HOVER: Color = Color::Rgb(245, 194, 231);
+const STONE: Color = Color::Rgb(147, 153, 178);
+const DISPLAY_BG: Color = Color::Rgb(24, 24, 37);
+const DISPLAY_BORDER: Color = Color::Rgb(137, 180, 250);
+const ERROR_FG: Color = Color::Rgb(243, 139, 168);
+const BASE: Color = Color::Rgb(30, 30, 46);
 
 fn main() -> io::Result<()> {
     ratatui::run(|terminal| {
@@ -694,10 +697,7 @@ fn render(frame: &mut Frame, app: &App, pointer: &Pointer) -> [Rect; KEY_COUNT] 
         .border_style(Style::new().fg(CARD_BORDER))
         .style(Style::new().bg(CARD_BG).fg(CREAM))
         .title(Line::from(vec![
-            Span::styled(
-                " rusty",
-                Style::new().fg(AMBER).add_modifier(Modifier::BOLD),
-            ),
+            Span::styled(" rusty", Style::new().fg(BLUE).add_modifier(Modifier::BOLD)),
             Span::styled("calc ", Style::new().fg(CREAM)),
         ]))
         .title_bottom(
@@ -789,7 +789,7 @@ fn render_key(frame: &mut Frame, area: Rect, key: &Key, hot: bool, pressed: bool
         bg = lighten(bg);
         border = CREAM;
     } else if hot {
-        border = AMBER;
+        border = HOVER;
     }
     let label_style = Style::new().fg(fg).bg(bg).add_modifier(Modifier::BOLD);
     if area.height >= 3 && area.width >= 3 {
@@ -827,31 +827,11 @@ fn centered_label(label: &str, rows: u16, style: Style) -> Vec<Line<'static>> {
 
 fn tone_colors(tone: Tone) -> (Color, Color, Color) {
     match tone {
-        Tone::Number => (
-            Color::Rgb(250, 250, 249),
-            Color::Rgb(68, 64, 60),
-            Color::Rgb(87, 83, 78),
-        ),
-        Tone::Operator => (
-            Color::Rgb(255, 247, 237),
-            Color::Rgb(180, 83, 9),
-            Color::Rgb(217, 119, 6),
-        ),
-        Tone::Equals => (
-            Color::Rgb(240, 253, 244),
-            Color::Rgb(21, 128, 61),
-            Color::Rgb(74, 222, 128),
-        ),
-        Tone::Clear => (
-            Color::Rgb(254, 226, 226),
-            Color::Rgb(153, 27, 27),
-            Color::Rgb(248, 113, 113),
-        ),
-        Tone::Function => (
-            Color::Rgb(231, 229, 228),
-            Color::Rgb(87, 83, 78),
-            Color::Rgb(120, 113, 108),
-        ),
+        Tone::Number => (CREAM, Color::Rgb(69, 71, 90), Color::Rgb(108, 112, 134)),
+        Tone::Operator => (BASE, BLUE, Color::Rgb(180, 190, 254)),
+        Tone::Equals => (BASE, Color::Rgb(166, 227, 161), Color::Rgb(148, 226, 213)),
+        Tone::Clear => (BASE, ERROR_FG, Color::Rgb(235, 160, 172)),
+        Tone::Function => (CREAM, Color::Rgb(88, 91, 112), CARD_BORDER),
     }
 }
 
